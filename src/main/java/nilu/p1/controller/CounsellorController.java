@@ -90,8 +90,22 @@ public class CounsellorController {
 		    	System.out.println(e);
 		        model.addAttribute("emsg", "An unexpected error occurred. Please try again later.");
 		        return "login";
-		    }
-		}
+		    }}
+	
+	
+	@GetMapping("/dashboard")
+	public String Dashboard(HttpServletRequest request ,Model model) {
+		
+		// get existing session obj
+		 HttpSession session = request.getSession(false);
+		Integer  CounsellorId= (Integer)  session.getAttribute("counsellorId");
+		
+		 DashboardResponse dbobj = service.getDashboardInfo(CounsellorId);
+	        model.addAttribute("dashbordInfo", dbobj);
+	        
+	
+		return "dashboard";
+	}
 		
 
 	

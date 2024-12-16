@@ -1,34 +1,40 @@
 package nilu.p1.controller;
 
-import org.hibernate.engine.query.spi.EntityGraphQueryHint;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import nilu.p1.entity.Enquiry;
-import nilu.p1.service.EnquiryService;
 import nilu.p1.service.EnquiryServiceImpl;
 
 @Controller
 public class EnquiryCountroller {
 	
-	@Autowired
 	private EnquiryServiceImpl  service;
 	
+	// setter injection
+	public EnquiryCountroller(EnquiryServiceImpl service) {
+		this.service = service;
+	}
+
+
 	@GetMapping("/enquiry")
 	public String addEnquiryPage(Model model) {
 		Enquiry enqobj = new Enquiry();
-		model.addAttribute("enquiry", enqobj);
+		model.addAttribute("enq", enqobj);
 		return "enquiryForm";
 	}
 
 	
 	@PostMapping("/addEnq")
-	public String handelEnquiry(Model model , HttpServletRequest req ,Enquiry enq) throws Exception {
+	public String handelEnquiry( @ModelAttribute("enq") Enquiry enq, Model model , HttpServletRequest req ) throws Exception {
 	
 		// get existing session obj
 		HttpSession session = req.getSession(false);
@@ -43,6 +49,19 @@ public class EnquiryCountroller {
 		}
 		
 		return "enquiryForm";
+	}
+	
+	@GetMapping("/regview")
+	public String getAllQuery(Model model,HttpServletRequest req) {
+		
+		HttpSession session = req.getSession(false);
+		Integer attribute = (Integer)  session.getAttribute("counsellorId");
+		
+		List<Enquiry> allEnquirys = service.getAllEnquirys(attribute);
+		
+		model.addAttribute("allQuery", attribute);
+		
+		return "registerView";
 	}
 
 

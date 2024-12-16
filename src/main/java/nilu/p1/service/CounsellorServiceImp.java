@@ -76,9 +76,9 @@ public class CounsellorServiceImp implements CounsellorService{
 		
 		
 		response.setTotalEnqs(totalEnq);
-		response.setLostEnqs(enrolledEnqs);
-		response.setOpenEnqs(lostEnqs);
-		response.setEnrolledEnqs(openEnqs);
+		response.setLostEnqs(counsellorId);
+		response.setOpenEnqs(counsellorId);
+		response.setEnrolledEnqs(counsellorId);
 		
 		return response;
 	}
